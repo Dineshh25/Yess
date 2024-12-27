@@ -1,0 +1,9 @@
+﻿@model Yess.Models.Category
+
+<form asp-action="Create" method="post">
+    <div>
+        <label for="CategoryName">Category Name</label>
+        <input asp-for="CategoryName" class="form-control" type="text" asp-controller="Category" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

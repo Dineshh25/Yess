@@ -1,0 +1,10 @@
+﻿@model Category
+
+<form asp-action="Edit" action="/Category/Edit">
+    <input asp-for="CategoryId" type="hidden" />
+    <div>
+        <label for="CategoryName">Category Name</label>
+        <input asp-for="CategoryName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

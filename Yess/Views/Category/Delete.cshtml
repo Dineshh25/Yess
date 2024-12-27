@@ -1,0 +1,11 @@
+﻿@model Category
+
+<form asp-action="DeleteConfirmed">
+    <input asp-for="CategoryId" type="hidden" />
+    <p>Are you sure you want to delete this category?</p>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+
