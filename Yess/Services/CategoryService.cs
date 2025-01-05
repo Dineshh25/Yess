@@ -28,21 +28,12 @@ namespace Yess.Services
             return category;
         }
 
-        //public async Task<Category> GetCategoryByIdAsync(int CategoryId)
-        //{
-        //    return await _context.Category.FindAsync(CategoryId);
-        //}
+        
         public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
             return await _context.Category.FirstOrDefaultAsync(c => c.CategoryId == categoryId);
         }
-
-
-
-
-      
-
-
+        
         public async Task<bool> UpdateCategoryAsync(Category category)
         {
             try
@@ -65,6 +56,7 @@ namespace Yess.Services
             }
          }
 
+
         public async Task DeleteCategoryAsync(int categoryId)
         {
             var category = await _context.Category.FindAsync(categoryId);
@@ -75,15 +67,7 @@ namespace Yess.Services
             }
         }
 
-        //public Task<Category> GetCategoryByIdAsync(int CategoryId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public void AddCategory(Category category)
-        //{
-        //    throw new NotImplementedException();
-        //}
+       
     }
 }
 
