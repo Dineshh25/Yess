@@ -95,33 +95,6 @@ namespace Yess.Controllers
         }
 
 
-        //[HttpPost]
-        //public IActionResult Edit(Product product)
-        //{
-        //    var existingProduct = _productService.GetProductById(product.ProductId);
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        if (existingProduct != null)
-        //        {
-        //            existingProduct.ProductName = product.ProductName;
-
-        //        }
-
-        //        _productService.UpdateProduct(existingProduct);
-        //        return RedirectToAction("Index");
-
-
-        //    }
-
-        //        ViewBag.Categories = _productService.GetAllCategories();
-        //        return View(product);
-
-        //}
-
-
-
-
         [HttpPost]
         public IActionResult Delete(int productId)
         {
