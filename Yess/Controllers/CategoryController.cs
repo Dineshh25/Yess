@@ -14,82 +14,74 @@ namespace Yess.Controllers
             _categoryService = categoryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _categoryService.GetAllCategories();
+            var categories = await _categoryService.GetAllCategoriesAsync();
             return View(categories);
         }
+
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Categories = _categoryService.GetAllCategories();
+            //ViewBag.Categories = _categoryService.GetAllCategories();
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Create(Category category)
-        //{
-        //    var categoryExists = _categoryService.GetCategoryById(category.CategoryId) != null;
-        //    if (!categoryExists)
-        //    {
-        //        ModelState.AddModelError("CategoryId", "The selected category does not exist.");
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        _categoryService.AddCategory(category);
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.Categories = _categoryService.GetAllCategories();
-        //    return View(category);
-        //}
         [HttpPost]
         public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.CreateCategoryAsync(category);
+                await _categoryService.AddCategoryAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        public IActionResult Edit(int id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int categoryId)
         {
-            var category = _categoryService.GetCategoryById(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            var category= await _categoryService.GetCategoryByIdAsync(categoryId);
             return View(category);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public async Task<IActionResult> Edit( Category category)
         {
+        
             if (ModelState.IsValid)
             {
-                _categoryService.UpdateCategory(category);
-                return RedirectToAction("Index");
-            }
-            return View(category);
-        }
+                bool isUpdated = await _categoryService.UpdateCategoryAsync(category);
+                Console.WriteLine($"Update Operation Result: {isUpdated}");
 
-        public IActionResult Delete(int id)
-        {
-            var category = _categoryService.GetCategoryById(id);
-            if (category == null)
-            {
-                return NotFound();
+                if (isUpdated)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ModelState.AddModelError("", "Unable to update category.");
             }
+
+            //await _categoryService.UpdateCategoryAsync(category);
+            //return RedirectToAction(nameof(Index));
+        //}
+
             return View(category);
         }
+        
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int CategoryId)
         {
-            _categoryService.DeleteCategory(id);
-            return RedirectToAction("Index");
+            var category = await _categoryService.GetCategoryByIdAsync(CategoryId);
+            if (category == null)
+            {
+                // Redirect to Index or show an error if the category doesn't exist
+                return RedirectToAction(nameof(Index));
+            }
+            await _categoryService.DeleteCategoryAsync(CategoryId);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -49,6 +49,13 @@ namespace Yess
                 pattern: "{controller=Home}/{action=Index}/{ProductId?}");
             //.WithStaticAssets();
 
+            app.MapControllerRoute(
+                name: "category",
+                pattern: "Category/{action=Index}/{CategoryId?}",
+                defaults: new { controller = "Category" });
+
+ 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers(); // Ensure controller routing is mapped

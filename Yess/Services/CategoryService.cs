@@ -1,11 +1,14 @@
-﻿using Yess.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Yess.Data;
 using Yess.Models;
+using Yess.Services;
 
 namespace Yess.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly AppDbContext _context;
+        //private readonly int CategoryId;
 
 
         public CategoryService(AppDbContext context)
@@ -13,54 +16,74 @@ namespace Yess.Services
             _context = context;
         }
 
-        public IEnumerable<Category> GetAllCategories()
+        public  async Task<List<Category>> GetAllCategoriesAsync()
         {
-            return _context.Category.ToList();
+            return await _context.Category.ToListAsync();
         }
 
-        public Category GetCategoryById(int ProductId)
+        public async Task<Category> AddCategoryAsync(Category category)
         {
-            return _context.Category.FirstOrDefault(c => c.CategoryId == ProductId);
-        }
-
-        //public void AddCategory(Category category)
-        //{
-        //    _context.Category.Add(category);
-        //    _context.SaveChanges();
-        //}
-
-        public async Task CreateCategoryAsync(Category category)
-        {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-
-            _context.Category.Add(category);
+            await _context.Category.AddAsync(category);
             await _context.SaveChangesAsync();
+            return category;
+        }
+
+        //public async Task<Category> GetCategoryByIdAsync(int CategoryId)
+        //{
+        //    return await _context.Category.FindAsync(CategoryId);
+        //}
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
+        {
+            return await _context.Category.FirstOrDefaultAsync(c => c.CategoryId == categoryId);
         }
 
 
-        public void UpdateCategory(Category category)
-        {
-            var category = await _context.Category.FindAsync(CategoryId);
-            if (category == null)
-                return false;
 
-        public void DeleteCategory(int CategoryId)
+
+      
+
+
+        public async Task<bool> UpdateCategoryAsync(Category category)
         {
-            var category = _context.Category.FirstOrDefault(c => c.CategoryId == CategoryId);
+            try
+            {
+                var existingCategory = await _context.Category.FindAsync(category.CategoryId);
+
+                if (existingCategory == null)
+                {
+                    return false;
+                }
+
+                existingCategory.CategoryName = category.CategoryName;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+         }
+
+        public async Task DeleteCategoryAsync(int categoryId)
+        {
+            var category = await _context.Category.FindAsync(categoryId);
             if (category != null)
             {
                 _context.Category.Remove(category);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public void AddCategory(Category category)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<Category> GetCategoryByIdAsync(int CategoryId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void AddCategory(Category category)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
 

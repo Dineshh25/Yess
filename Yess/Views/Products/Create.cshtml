@@ -17,12 +17,9 @@
 	</div>
 
 	<div class="row mb-3">
-		<label class="col-sm-4 col-form-label">CategoryName</label>
+		<label class="col-sm-4 col-form-label">Category</label>
 		<div class="col-sm-8">
 					<select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"))">
-				@* <option value="Others">Others</option> *@
-				@* <option value="Phones">Phones</option> *@
-				@* <option value="Laptops">Laptops</option> *@
 				
 			</select>
 					<span asp-validation-for="CategoryId" class="text-danger"></span>

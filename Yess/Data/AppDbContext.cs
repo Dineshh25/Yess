@@ -11,14 +11,7 @@ namespace Yess.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Category { get; set; }
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Product>()
-        //        .HasRequired(p => p.Category)
-        //        .WithMany(c => c.Products)
-        //        .HasForeignKey(p => p.CategoryId);
-        //}
-
+    
 
     }
 

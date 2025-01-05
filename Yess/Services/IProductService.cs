@@ -6,15 +6,17 @@ namespace Yess.Services
     {
         IEnumerable<Product> GetAllProducts();
 
-        //IEnumerable<Product> GetAllProducts(int page, int pageSize);
-        Product GetProductById(int productid);
+        
+        Product GetProductById(int productId);
+
         void AddProduct(Product product);
 
-        //List<Product> GetAllProducts();
-
-        //List<Category> GetAllCategories();
+        PagedResult<Product> GetPagedProducts(int pageNumber, int pageSize);
+       
         void UpdateProduct(Product product);
+
         IEnumerable<Category> GetAllCategories();
+
         void DeleteProduct(int productId);
         
         Category GetCategoryById(int categoryId);

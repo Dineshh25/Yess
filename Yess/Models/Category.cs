@@ -10,6 +10,6 @@ namespace Yess.Models
         [Required]
         [StringLength(50)]
         public string CategoryName { get; set; } = "";
-        public virtual ICollection<Product> Products { get; set; } 
+        
     }
 }

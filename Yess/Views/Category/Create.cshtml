@@ -4,6 +4,7 @@
     <div>
         <label for="CategoryName">Category Name</label>
         <input asp-for="CategoryName" class="form-control" type="text" asp-controller="Category" />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>

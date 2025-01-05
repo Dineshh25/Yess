@@ -14,12 +14,14 @@ namespace Yess.Models
         public string ProductName { get; set; } = "";
 
         [Required]
+        //[ForeignKey("CategoryId")]
         public int CategoryId { get; set; }
 
         
         public string CategoryName { get; set; } = "";
 
-        [ForeignKey("CategoryId")]
-        public virtual Category? Category { get; set; } 
+
+        public  virtual Category? Category { get; set; } 
     }
 }
+    

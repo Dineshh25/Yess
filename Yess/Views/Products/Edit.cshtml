@@ -5,53 +5,23 @@
 <div class="row">
 	<div class=" col-md-8 mx-auto rounded border p-3">
 		<h2 class="text-center mb-5">Edit Product</h2>
-		<form method="post" action="/Products/Edit"  >
-			<input asp-for="ProductId" type="hidden" />
-			@* <div class="row mb-3"> *@
-			@* 	<label class="col-sm-4 col-form-label" asp-for="ProductId">ProductId</label> *@
-			@* 	<input class="form-control-plaintext" readonly value="@ViewData["ProductId"]"> *@
-			@* 	<span asp-validation-for="ProductId" class="text-danger"></span> *@
-			@* </div> *@
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label" asp-for="ProductName">Product Name</label>
-				<input class="form-control" asp-for="ProductName">
-				<span asp-validation-for="ProductName" class="text-danger"></span>
+	
 
-			</div>
+<form asp-action="Edit" method="post">
+    <input  type="hidden"  asp-for="ProductId"  />
+
+    <div class="form-group">
+        <label asp-for="ProductName">Product Name</label>
+        <input asp-for="ProductName" class="form-control" />    
+        @* <span asp-validation-for="ProductName" class="text-danger"></span> *@
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+    </div>
+</div>
 
 
-
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label" asp-for="CategoryId">CategoryName</label>
-				<div class="col-sm-8">
-					<select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"," Model.CategoryId"))">
-						@* <option value="Others">Others</option> *@
-						@* <option value="Phones">Phones</option> *@
-						@* <option value="Laptops">Laptops</option> *@
-
-					</select>
-					<span asp-validation-for="CategoryId" class="text-danger"></span>
-				</div>
-			</div>
-
-			<button class="btn btn-primary" value="save" type="submit">Save Changes</button>
-		</form>
 		
-
-				@* <div class="row mb-3"> *@
-				@* 	<label class="col-sm-4 col-form-label">CategoryId</label> *@
-				@* 	<select class="form-select" asp-for="CategoryId" asp-items="ViewBag.Categories"></select> *@
-				@* 	<span asp-validation-for="CategoryId" class="text-danger"></span> *@
-
-				@* </div> *@
-
 
 				
-				@* <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Cancel</a> *@
 
-			
-			
-
-		
-	</div>
-</div>

@@ -10,21 +10,44 @@ using System.Linq;
 
 namespace Yess.Services
 {
-    public class ProductService(AppDbContext context) : IProductService
+    public class ProductService : IProductService
     {
-        private readonly AppDbContext _context = context;
+        private readonly AppDbContext _context ;
         private readonly int ProductId;
+
+        public ProductService(AppDbContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Product> GetAllProducts()
         {
             return _context.Products.Include(p => p.Category).ToList();
         }
 
-        public Product GetProductById(int Productid)
+        public Product GetProductById(int productId)
         {
-            return _context.Products
-                //.Include(p => p.Category)
-                .FirstOrDefault(p => p.ProductId == ProductId);
+            return _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            
+
+        }
+
+
+        public PagedResult<Product> GetPagedProducts(int pageNumber, int pageSize)
+        {
+            var totalItems = _context.Products.Count();
+            var products = _context.Products
+                .Skip((pageNumber - 1) * pageSize)  // Skip items from previous pages
+                .Take(pageSize)  // Take the items for the current page
+                .ToList();
+
+            return new PagedResult<Product>
+            {
+                Items = products,
+                TotalItems = totalItems,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
 
         public void AddProduct(Product product)
@@ -32,17 +55,27 @@ namespace Yess.Services
             _context.Products.Add(product);
             _context.SaveChanges();
         }
+
+        public void UpdateProduct(Product product)
+        {
+            var existingProduct = _context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
+            existingProduct.ProductName = product.ProductName;
+            _context.SaveChanges();
+        }
+
         public IEnumerable<Category> GetAllCategories()
         {
             return _context.Category.ToList();
         }
-        public Category GetCategoryById(int ProductId)
+
+        public Category GetCategoryById(int categoryId)
         {
-            return _context.Category.FirstOrDefault(c => c.CategoryId == ProductId);
+            return _context.Category.FirstOrDefault(c => c.CategoryId == categoryId);
         }
-        public void DeleteProduct(int ProductId)
+
+        public void DeleteProduct(int productId)
         {
-            var product = _context.Products.FirstOrDefault(p => p.ProductId == ProductId);
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             if (product != null)
             {
                 _context.Products.Remove(product);
@@ -50,36 +83,17 @@ namespace Yess.Services
             }
         }
 
-        //public void UpdateProduct(Product product)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        
 
-        public void UpdateProduct(Product product)
-        {
-            var existingProduct = _context.Products.FirstOrDefault(p => p.ProductId == product.ProductId);
-            if (existingProduct != null)
-            {
-                existingProduct.ProductName = product.ProductName;
-                existingProduct.CategoryId = product.CategoryId;
-                _context.SaveChanges();
-            }
-            
-        }
-
-        //public List<Category> GetAllCategories()
-        //{
-        //    return _context.Category.ToList();
-        //}
-        //List<Product> IProductService.GetAllProducts()
-        //{
-        //    return _context.Products
-        //        .ToList();
-        //}
 
 
     }
-}
+
+
+
+
+    }
+//}
 
 
 

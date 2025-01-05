@@ -1,15 +1,16 @@
 ﻿using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Yess.Models;
 using Yess.Services;
 
 namespace Yess.Controllers
 {
+    
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ICategoryService _categoryService;
+        //private readonly ICategoryService _categoryService;
 
         public ProductsController(IProductService productService )
         {
@@ -17,18 +18,27 @@ namespace Yess.Controllers
             //_categoryService = categoryService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1, int pageSize = 10)
         {
-            var products = _productService.GetAllProducts();
-            return View(products);
+            var pagedResult = _productService.GetPagedProducts(pageNumber, pageSize);
+
+            ViewBag.PageNumber = pagedResult.PageNumber;
+            ViewBag.TotalPages = pagedResult.TotalPages;
+
+            return View(pagedResult.Items);  // Pass the paginated list to the view
         }
 
+       
+
         [HttpGet]
+
         public IActionResult Create()
         {
             ViewBag.Categories = _productService.GetAllCategories();
             return View();
         }
+
+
         [HttpPost]
         public IActionResult Create(Product product)
         {
@@ -40,8 +50,13 @@ namespace Yess.Controllers
             }
             if (ModelState.IsValid)
             {
+                var category = _productService.GetCategoryById(product.CategoryId);
+                if (category != null)
+                {
+                    product.CategoryName = category.CategoryName;  // Set the CategoryName before saving
+                }
+
                 _productService.AddProduct(product);
-                //-ProductService.Savechanges();
                 return RedirectToAction("Index");
 
             }
@@ -57,70 +72,66 @@ namespace Yess.Controllers
         [HttpGet]
         public IActionResult Edit(int ProductId) 
         {
-            var product = _productService.GetProductById(ProductId);
-            //if (product == null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            //else
-            //{
-                ViewBag.Categories = _productService.GetAllCategories();
-                return View(product);
-            //}
+            ViewBag.Categories = _productService.GetAllCategories();
+            return View();
         }
-            
 
-        
+
         [HttpPost]
-         
         public IActionResult Edit(Product product)
         {
-            //var product = context.Products.Find(ProductId);
+            
 
-            //if (product == null || product.ProductId <= 0)
-            //{
-            //    return RedirectToAction("Index");
-            //}
-            // Optionally, you can check if the product exists in the database
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ViewBag.Categories = _productService.GetAllCategories();
-                return View(product);
+                //var existingProduct = _productService.GetProductById(product.ProductId);
+                //existingProduct.ProductName = product.ProductName;
+                _productService.UpdateProduct(product);
+                return RedirectToAction("Index");
             }
-            //var existingProduct = _productService.GetProductById(product.ProductId); // Assuming you have this service method
-            //if (existingProduct == null)
-            //{
-            //    // If no product found with the given ID, redirect to the Index page
-            //    return RedirectToAction("Index");
-            //}
-
-            _productService.UpdateProduct(product);
-            return RedirectToAction("Index");
-
-
-
+                //ViewBag.Categories = _productService.GetAllCategories();
+                return View(product);
+             
         }
-        //public IActionResult Delete(int ProductId)
+
+
+        //[HttpPost]
+        //public IActionResult Edit(Product product)
         //{
-        //    var product = _productService.GetProductById(ProductId);
-        //    if (product == null)
+        //    var existingProduct = _productService.GetProductById(product.ProductId);
+        //    if (ModelState.IsValid)
         //    {
-        //        return NotFound();
+
+        //        if (existingProduct != null)
+        //        {
+        //            existingProduct.ProductName = product.ProductName;
+
+        //        }
+
+        //        _productService.UpdateProduct(existingProduct);
+        //        return RedirectToAction("Index");
+
+
         //    }
-        //    return View(product);
+
+        //        ViewBag.Categories = _productService.GetAllCategories();
+        //        return View(product);
+
         //}
 
+
+
+
         [HttpPost]
-        public IActionResult Delete(int ProductId)
+        public IActionResult Delete(int productId)
         {
            
-            var product = _productService.GetProductById(ProductId);
-
+            var product = _productService.GetProductById(productId);
             if (product == null)
             {
                 return RedirectToAction("Index");
             }
-            _productService.DeleteProduct(ProductId);
+            _productService.DeleteProduct(productId);
             return RedirectToAction("Index");
         }
     }

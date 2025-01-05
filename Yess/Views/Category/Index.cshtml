@@ -1,6 +1,5 @@
-﻿@model List<Category>
-@{
-}
+﻿@model IEnumerable<Yess.Models.Category>
+
 
 <h2 class=" text-center mb-5"> List of Categories</h2>
 
@@ -12,11 +11,11 @@
 	</div>
 </div>
 
-<table>
-    <thead>
+<table class="table table-bordered text-center">
+    <thead class="bg-dark text-light">
         <tr>
             <th>Category Name</th>
-            @* <th>CategoryId</th> *@
+            <th>CategoryId</th> 
             <th>Actions</th>
         </tr>
     </thead>
@@ -25,9 +24,15 @@
         {
             <tr>
                 <td>@category.CategoryName</td>
+                <td>@category.CategoryId</td>
+
                 <td>
-                    <a asp-action="Edit" asp-controller="Products" asp-route-id="@category.CategoryId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@category.CategoryId">Delete</a>
+                    <a class="btn btn-primary btn-sm" type="submit" asp-controller="Category" asp-action="Edit" asp-route-id="@category.CategoryId">Edit</a> |
+                    @* <a class="btn btn-primary btn-sm" type="submit" asp-controller="Products" asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> *@
+                    <form asp-action="Delete" asp-controller="Category" method="post">
+                        <input type="hidden" name="categoryId" value="@category.CategoryId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
         }
