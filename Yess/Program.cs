@@ -37,17 +37,12 @@ namespace Yess
 
             app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{ProductId?}");
-            ///
+           
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{ProductId?}");
-            //.WithStaticAssets();
+           
 
             app.MapControllerRoute(
                 name: "category",
