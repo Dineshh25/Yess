@@ -28,7 +28,7 @@
 
                 <td>
                     <a class="btn btn-primary btn-sm" type="submit" asp-controller="Category" asp-action="Edit" asp-route-id="@category.CategoryId">Edit</a> |
-                    @* <a class="btn btn-primary btn-sm" type="submit" asp-controller="Products" asp-action="Edit" asp-route-id="@product.ProductId">Edit</a> *@
+                    
                     <form asp-action="Delete" asp-controller="Category" method="post">
                         <input type="hidden" name="categoryId" value="@category.CategoryId" />
                         <button type="submit" class="btn btn-danger">Delete</button>
