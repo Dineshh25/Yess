@@ -44,7 +44,6 @@ namespace Yess.Controllers
         //    return View(category);
         //}
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)

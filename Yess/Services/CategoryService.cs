@@ -43,9 +43,9 @@ namespace Yess.Services
 
         public void UpdateCategory(Category category)
         {
-            _context.Category.Update(category);
-            _context.SaveChanges();
-        }
+            var category = await _context.Category.FindAsync(CategoryId);
+            if (category == null)
+                return false;
 
         public void DeleteCategory(int CategoryId)
         {
